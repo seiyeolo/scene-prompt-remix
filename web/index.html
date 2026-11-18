@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>장면 프롬프트 리믹서</title>
+<style>
+  :root {
+    --bg: #0d0f14; --panel: #161a22; --line: #2a303c;
+    --text: #eef0f4; --muted: #9aa3b2; --accent: #f0a63a; --accent-ink: #1a1305;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font: 16px/1.6 system-ui, -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  }
+  main { max-width: 860px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { font-size: 1.6rem; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .lead { color: var(--muted); margin: 0 0 28px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
+  label.field { display: block; font-size: 0.8rem; color: var(--muted); }
+  select {
+    display: block; width: 100%; margin-top: 4px; padding: 10px 12px;
+    background: var(--panel); color: var(--text); border: 1px solid var(--line);
+    border-radius: 8px; font: inherit;
+  }
+  fieldset { border: 0; padding: 0; margin: 20px 0 0; }
+  legend { font-size: 0.8rem; color: var(--muted); padding: 0; margin-bottom: 6px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips label {
+    padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
+    background: var(--panel); cursor: pointer; font-size: 0.9rem; user-select: none;
+  }
+  .chips input { position: absolute; opacity: 0; }
+  .chips label:has(input:checked) { border-color: var(--accent); color: var(--accent); }
+  .chips label:has(input:focus-visible), select:focus-visible, button:focus-visible {
+    outline: 2px solid var(--accent); outline-offset: 2px;
+  }
+  fieldset:disabled { opacity: 0.4; }
+  .card {
+    margin-top: 28px; background: #05060a; border: 1px solid var(--line);
+    border-radius: 12px; padding: 20px;
+  }
+  .card-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+  .tag { color: var(--accent); font: 700 0.85rem ui-monospace, Menlo, Consolas, monospace; letter-spacing: 0.08em; }
+  .buttons { display: flex; gap: 8px; }
+  button {
+    padding: 8px 16px; border-radius: 6px; border: 1px solid var(--line);
+    background: var(--panel); color: var(--text); font: inherit; font-weight: 600; cursor: pointer;
+  }
+  button.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+  #prompt { margin: 16px 0 0; font-size: 1.05rem; overflow-wrap: anywhere; }
+  footer { margin-top: 28px; color: var(--muted); font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>장면 프롬프트 리믹서</h1>
+  <p class="lead">주인공·행동·배경을 고르면 AI Studio, Gemini, Claude 등에 붙여 넣을 프롬프트가 만들어집니다.</p>
+
+  <div class="grid">
+    <label class="field">주인공 <select id="subject"></select></label>
+    <label class="field">행동 <select id="action"></select></label>
+    <label class="field">배경 <select id="setting"></select></label>
+    <label class="field">기술 <select id="tech"></select></label>
+    <label class="field">난이도
+      <select id="level">
+        <option value="1">1단계 · 한 줄</option>
+        <option value="2" selected>2단계 · 표준</option>
+        <option value="3">3단계 · 심화</option>
+      </select>
+    </label>
+  </div>
+
+  <fieldset id="extras-set" disabled>
+    <legend>심화 요소 (3단계에서 선택)</legend>
+    <div class="chips" id="extras"></div>
+  </fieldset>
+
+  <section class="card" aria-live="polite">
+    <div class="card-head">
+      <span class="tag">PROMPT</span>
+      <div class="buttons">
+        <button id="random" type="button">무작위</button>
+        <button id="copy" type="button" class="primary">복사</button>
+      </div>
+    </div>
+    <p id="prompt"></p>
+  </section>
+
+  <footer>배경 목록은 고른 행동에 맞는 지형(길·물·눈)만 보여 줍니다.</footer>
+</main>
+
+<script src="slots.js"></script>
+<script src="generator.js"></script>
+<script>
+  const S = window.SLOTS;
+  const $ = (id) => document.getElementById(id);
+  const options = (items) => items.map((x) => `<option value="${x.id}">${x.ko}</option>`).join('');
+
+  $('subject').innerHTML = options(S.subjects);
+  $('action').innerHTML = options(S.actions);
+  $('tech').innerHTML = options(S.tech);
+  $('extras').innerHTML = S.extras
+    .map((e) => `<label><input type="checkbox" value="${e.id}">${e.ko}</label>`)
+    .join('');
+
+  // 행동이 바뀌면 지형이 맞는 배경만 남긴다.
+  function syncSettings() {
+    const terrain = S.actions.find((a) => a.id === $('action').value).terrain;
+    const fits = S.settings.filter((s) => s.terrain === terrain);
+    const current = $('setting').value;
+    $('setting').innerHTML = options(fits);
+    if (fits.some((s) => s.id === current)) $('setting').value = current;
+  }
+
+  function render() {
+    const level = Number($('level').value);
+    $('extras-set').disabled = level < 3;
+    $('prompt').textContent = ScenePrompt.buildPrompt(S, {
+      tech: $('tech').value,
+      subject: $('subject').value,
+      action: $('action').value,
+      setting: $('setting').value,
+      level,
+      extras: [...document.querySelectorAll('#extras input:checked')].map((i) => i.value),
+    });
+  }
+
+  $('action').addEventListener('change', syncSettings);
+  document.querySelector('main').addEventListener('change', render);
+
+  $('random').addEventListener('click', () => {
+    const sel = ScenePrompt.randomSelection(S);
+    $('subject').value = sel.subject;
+    $('action').value = sel.action;
+    syncSettings();
+    $('setting').value = sel.setting;
+    render();
+  });
+
+  $('copy').addEventListener('click', async () => {
+    const text = $('prompt').textContent;
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // file:// 등 클립보드 API가 막힌 환경을 위한 대체 경로
+      const area = Object.assign(document.createElement('textarea'), { value: text });
+      document.body.append(area);
+      area.select();
+      document.execCommand('copy');
+      area.remove();
+    }
+    $('copy').textContent = '복사됨';
+    setTimeout(() => ($('copy').textContent = '복사'), 1200);
+  });
+
+  syncSettings();
+  render();
+</script>
+</body>
+</html>

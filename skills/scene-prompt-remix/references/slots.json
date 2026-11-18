@@ -1,0 +1,59 @@
+{
+  "tech": [
+    { "id": "three",   "ko": "Three.js (3D)",        "lead": "Create a 3D scene using Three.js",                    "cap": "3D modeling, animation, and visual design" },
+    { "id": "babylon", "ko": "Babylon.js (3D)",      "lead": "Create a 3D scene using Babylon.js",                  "cap": "3D modeling, animation, and visual design" },
+    { "id": "p5",      "ko": "p5.js (2D)",           "lead": "Create an animated 2D scene using p5.js",             "cap": "illustration, animation, and visual design" },
+    { "id": "canvas",  "ko": "Canvas API (2D)",      "lead": "Create an animated 2D scene using the HTML Canvas API", "cap": "illustration, animation, and visual design" },
+    { "id": "svg",     "ko": "SVG + CSS (일러스트)", "lead": "Create an animated scene using only SVG and CSS",     "cap": "illustration, animation, and visual design" }
+  ],
+  "subjects": [
+    { "id": "tiger",    "ko": "호랑이",     "en": "a cute Korean tiger",                             "short": "tiger",    "poss": "its", "front": "front paws", "rear": "feet",       "secondary": "its tail sways naturally" },
+    { "id": "magpie",   "ko": "까치",       "en": "a cheerful Korean magpie",                        "short": "magpie",   "poss": "its", "front": "wing tips",  "rear": "feet",       "secondary": "its long tail feathers bob with each movement" },
+    { "id": "bear",     "ko": "반달가슴곰", "en": "a chubby Asiatic black bear cub",                 "short": "bear cub", "poss": "its", "front": "front paws", "rear": "feet",       "secondary": "its round ears wiggle and its fur ripples in the wind" },
+    { "id": "jindo",    "ko": "진돗개",     "en": "a cute white Jindo dog",                          "short": "Jindo dog","poss": "its", "front": "front paws", "rear": "hind paws",  "secondary": "its curled tail wags happily" },
+    { "id": "rabbit",   "ko": "달토끼",     "en": "a fluffy moon rabbit from Korean folklore",       "short": "rabbit",   "poss": "its", "front": "front paws", "rear": "feet",       "secondary": "its long ears flap in the wind" },
+    { "id": "crane",    "ko": "두루미",     "en": "an elegant red-crowned crane",                    "short": "crane",    "poss": "its", "front": "wing tips",  "rear": "feet",       "secondary": "its long neck bobs gently" },
+    { "id": "dokkaebi", "ko": "도깨비",     "en": "a mischievous but friendly Korean dokkaebi (goblin)", "short": "dokkaebi", "poss": "its", "front": "hands",  "rear": "feet",       "secondary": "the club on its belt swings with each movement" },
+    { "id": "haenyeo",  "ko": "해녀",       "en": "a cheerful Jeju haenyeo (woman diver)",           "short": "haenyeo",  "poss": "her", "front": "hands",      "rear": "feet",       "secondary": "her net bag swings behind her" }
+  ],
+  "actions": [
+    { "id": "bicycle",    "ko": "자전거",       "terrain": "road",  "verb": "rides a bicycle",
+      "mech": "is actually riding the bicycle, pedaling with both {rear}, steering the handlebars with {poss} {front} while {secondary}, and the wheels rotate in sync with the pedaling." },
+    { "id": "skateboard", "ko": "스케이트보드", "terrain": "road",  "verb": "rides a skateboard",
+      "mech": "is actually riding the skateboard, pushing off the ground with one of {poss} {rear} and keeping the other planted on the deck, balancing with {poss} {front} spread wide while {secondary}, and the wheels spin in sync with the board's speed." },
+    { "id": "scooter",    "ko": "킥보드",       "terrain": "road",  "verb": "rides a kick scooter",
+      "mech": "is actually riding the kick scooter, standing on the deck with one of {poss} {rear} and pushing off the ground with the other, steering the handlebar with {poss} {front} while {secondary}, and the wheels spin in sync with each push." },
+    { "id": "kayak",      "ko": "카약",         "terrain": "water", "verb": "paddles a kayak",
+      "mech": "is actually paddling the kayak, sitting low with both {rear} braced inside the hull and gripping a double-bladed paddle with {poss} {front}, dipping the blades alternately left and right while {secondary}, and the kayak surges forward in sync with each stroke." },
+    { "id": "sup",        "ko": "패들보드",     "terrain": "water", "verb": "rides a stand-up paddleboard",
+      "mech": "is actually paddling, standing balanced with both {rear} planted on the board and gripping a long paddle with {poss} {front}, switching sides every few strokes while {secondary}, and the board glides and leaves a wake in sync with each stroke." },
+    { "id": "sled",       "ko": "눈썰매",       "terrain": "snow",  "verb": "rides a wooden sled",
+      "mech": "is actually riding the sled, sitting low with both {rear} braced on the front bar and gripping the steering rope with {poss} {front} while {secondary}, and the sled leans into turns and sprays snow in sync with its speed." },
+    { "id": "ski",        "ko": "스키",         "terrain": "snow",  "verb": "skis",
+      "mech": "is actually skiing, knees bent with both {rear} locked into the skis and planting a pole with each of {poss} {front} in rhythm while {secondary}, and the skis carve tracks in the snow in sync with each turn." }
+  ],
+  "settings": [
+    { "id": "coast",   "ko": "동해 해안도로",     "terrain": "road",  "en": "along a coastal road in Korea" },
+    { "id": "hanok",   "ko": "한옥마을 골목",     "terrain": "road",  "en": "through the alleys of a traditional Korean hanok village" },
+    { "id": "hangang", "ko": "한강 자전거길(밤)", "terrain": "road",  "en": "along the Han River bike path in Seoul at night" },
+    { "id": "jeju",    "ko": "제주 유채꽃길",     "terrain": "road",  "en": "along a Jeju Island road lined with canola flowers and black stone walls" },
+    { "id": "seorak",  "ko": "설악산 단풍길",     "terrain": "road",  "en": "along a winding mountain road through the autumn foliage of Seoraksan" },
+    { "id": "jejusea", "ko": "제주 앞바다",       "terrain": "water", "en": "across the calm turquoise sea off Jeju Island" },
+    { "id": "river",   "ko": "한강 노을",         "terrain": "water", "en": "down the Han River in Seoul at sunset" },
+    { "id": "valley",  "ko": "산속 계곡",         "terrain": "water", "en": "down a clear mountain valley stream in Korea" },
+    { "id": "gangwon", "ko": "강원도 눈 언덕",    "terrain": "snow",  "en": "down a snowy hill in Gangwon-do, Korea" },
+    { "id": "snowhanok","ko": "눈 내린 한옥마을", "terrain": "snow",  "en": "down a gentle slope beside a snow-covered Korean hanok village" }
+  ],
+  "extras": [
+    { "id": "daynight", "ko": "낮/밤 전환",   "en": "Day turns to night on a smooth cycle, and lights come on at dusk." },
+    { "id": "weather",  "ko": "날씨 변화",    "en": "Add changing weather, such as drifting clouds, light rain, or falling petals, and make the scene react to it." },
+    { "id": "camera",   "ko": "카메라 전환",  "en": "Let the user switch camera views (follow, side, top-down, free orbit) with on-screen buttons." },
+    { "id": "speed",    "ko": "속도 조절",    "en": "Let the user control the speed with a slider or the keyboard, and keep every moving part in sync with it." },
+    { "id": "single",   "ko": "단일 HTML",    "en": "Deliver everything as a single self-contained HTML file that works on both mobile and desktop." }
+  ],
+  "fixed": {
+    "quality": "The motion is natural and smooth.",
+    "richness": "The scene is lively and richly detailed, with a natural environment, dynamic effects, lighting and shadows, and interactive features.",
+    "closing": "Make full use of your {cap} capabilities to create a polished, ready-to-run web piece."
+  }
+}
