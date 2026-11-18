@@ -19,13 +19,16 @@
   .lead { color: var(--muted); margin: 0 0 28px; }
   .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; }
   label.field { display: block; font-size: 0.8rem; color: var(--muted); }
-  select {
+  select, input[type=text] {
     display: block; width: 100%; margin-top: 4px; padding: 10px 12px;
     background: var(--panel); color: var(--text); border: 1px solid var(--line);
     border-radius: 8px; font: inherit;
   }
   fieldset { border: 0; padding: 0; margin: 20px 0 0; }
   legend { font-size: 0.8rem; color: var(--muted); padding: 0; margin-bottom: 6px; }
+  input[type=text] { margin-top: 6px; }
+  input[type=text][hidden] { display: none; }
+  .count { color: var(--muted); font-size: 0.85rem; margin: -16px 0 24px; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .chips label {
     padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px;
@@ -33,10 +36,10 @@
   }
   .chips input { position: absolute; opacity: 0; }
   .chips label:has(input:checked) { border-color: var(--accent); color: var(--accent); }
-  .chips label:has(input:focus-visible), select:focus-visible, button:focus-visible {
+  .chips label:has(input:focus-visible), select:focus-visible, input[type=text]:focus-visible, button:focus-visible {
     outline: 2px solid var(--accent); outline-offset: 2px;
   }
-  fieldset:disabled { opacity: 0.4; }
+  fieldset:disabled, select:disabled { opacity: 0.4; }
   .card {
     margin-top: 28px; background: #05060a; border: 1px solid var(--line);
     border-radius: 12px; padding: 20px;
@@ -57,12 +60,23 @@
 <main>
   <h1>장면 프롬프트 리믹서</h1>
   <p class="lead">주인공·행동·배경을 고르면 AI Studio, Gemini, Claude 등에 붙여 넣을 프롬프트가 만들어집니다.</p>
+  <p class="count" id="count"></p>
 
   <div class="grid">
-    <label class="field">주인공 <select id="subject"></select></label>
-    <label class="field">행동 <select id="action"></select></label>
-    <label class="field">배경 <select id="setting"></select></label>
+    <div class="field">
+      <label class="field">주인공 <select id="subject"></select></label>
+      <input type="text" id="subject-custom" hidden aria-label="주인공 직접 입력" placeholder="예: a sleepy koala">
+    </div>
+    <div class="field">
+      <label class="field">행동 <select id="action"></select></label>
+      <input type="text" id="action-custom" hidden aria-label="행동 직접 입력" placeholder="예: drives a tiny tractor">
+    </div>
+    <div class="field">
+      <label class="field">배경 <select id="setting"></select></label>
+      <input type="text" id="setting-custom" hidden aria-label="배경 직접 입력" placeholder="예: through a night market in Seoul">
+    </div>
     <label class="field">기술 <select id="tech"></select></label>
+    <label class="field">화풍 <select id="style"></select></label>
     <label class="field">난이도
       <select id="level">
         <option value="1">1단계 · 한 줄</option>
@@ -88,40 +102,74 @@
     <p id="prompt"></p>
   </section>
 
-  <footer>배경 목록은 고른 행동에 맞는 지형(길·물·눈)만 보여 줍니다.</footer>
+  <footer>
+    배경 목록은 고른 행동에 맞는 지형(길·물·바다·눈·얼음·하늘·마당)만 보여 줍니다.
+    목록에 없으면 맨 아래 <b>직접 입력</b>을 고르세요. 영어로 쓰면 가장 잘 맞고, 한국어로 써도 대부분의 모델이 알아듣습니다.
+    화풍은 2단계부터 반영됩니다.
+  </footer>
 </main>
 
 <script src="slots.js"></script>
 <script src="generator.js"></script>
 <script>
   const S = window.SLOTS;
+  const CUSTOM = '__custom';
   const $ = (id) => document.getElementById(id);
-  const options = (items) => items.map((x) => `<option value="${x.id}">${x.ko}</option>`).join('');
+  const option = (x) => `<option value="${x.id}">${x.ko}</option>`;
+  const customOption = `<option value="${CUSTOM}">✏️ 직접 입력</option>`;
 
-  $('subject').innerHTML = options(S.subjects);
-  $('action').innerHTML = options(S.actions);
-  $('tech').innerHTML = options(S.tech);
+  // 분류별로 <optgroup>을 만든다.
+  function grouped(items, keyOf, labels) {
+    return Object.entries(labels)
+      .map(([key, label]) => {
+        const inGroup = items.filter((x) => keyOf(x) === key);
+        return inGroup.length ? `<optgroup label="${label}">${inGroup.map(option).join('')}</optgroup>` : '';
+      })
+      .join('');
+  }
+
+  $('subject').innerHTML = grouped(S.subjects, (x) => x.group, S.groups.subject) + customOption;
+  $('action').innerHTML = grouped(S.actions, (x) => x.terrain, S.groups.terrain) + customOption;
+  $('tech').innerHTML = grouped(S.tech, (x) => x.dim, S.groups.dim);
+  $('style').innerHTML = S.styles.map(option).join('');
   $('extras').innerHTML = S.extras
     .map((e) => `<label><input type="checkbox" value="${e.id}">${e.ko}</label>`)
     .join('');
+  $('count').textContent =
+    `주인공 ${S.subjects.length} · 행동 ${S.actions.length} · 배경 ${S.settings.length} · ` +
+    `기술 ${S.tech.length} · 화풍 ${S.styles.length - 1} · 심화 요소 ${S.extras.length}`;
 
-  // 행동이 바뀌면 지형이 맞는 배경만 남긴다.
+  // 행동이 바뀌면 지형이 맞는 배경만 남긴다. 행동을 직접 입력하면 모든 배경을 보여 준다.
   function syncSettings() {
-    const terrain = S.actions.find((a) => a.id === $('action').value).terrain;
-    const fits = S.settings.filter((s) => s.terrain === terrain);
+    const actionId = $('action').value;
+    const terrain = actionId === CUSTOM ? null : S.actions.find((a) => a.id === actionId).terrain;
+    const fits = terrain ? S.settings.filter((s) => s.terrains.includes(terrain)) : S.settings;
     const current = $('setting').value;
-    $('setting').innerHTML = options(fits);
-    if (fits.some((s) => s.id === current)) $('setting').value = current;
+    $('setting').innerHTML =
+      grouped(fits, (s) => (terrain && s.terrains.includes(terrain) ? terrain : s.terrains[0]), S.groups.terrain) +
+      customOption;
+    if (current === CUSTOM || fits.some((s) => s.id === current)) $('setting').value = current;
+  }
+
+  // 직접 입력을 고르면 입력칸을 보여 주고, 그 값을 { custom } 으로 넘긴다.
+  function slotValue(name) {
+    const isCustom = $(name).value === CUSTOM;
+    const input = $(name + '-custom');
+    input.hidden = !isCustom;
+    if (!isCustom) return $(name).value;
+    return { custom: input.value.trim() || input.placeholder.replace(/^예:\s*/, '') };
   }
 
   function render() {
     const level = Number($('level').value);
     $('extras-set').disabled = level < 3;
+    $('style').disabled = level < 2;
     $('prompt').textContent = ScenePrompt.buildPrompt(S, {
       tech: $('tech').value,
-      subject: $('subject').value,
-      action: $('action').value,
-      setting: $('setting').value,
+      subject: slotValue('subject'),
+      action: slotValue('action'),
+      setting: slotValue('setting'),
+      style: $('style').value,
       level,
       extras: [...document.querySelectorAll('#extras input:checked')].map((i) => i.value),
     });
@@ -129,6 +177,14 @@
 
   $('action').addEventListener('change', syncSettings);
   document.querySelector('main').addEventListener('change', render);
+  document.querySelector('main').addEventListener('input', (e) => {
+    if (e.target.matches('input[type=text]')) render();
+  });
+  for (const name of ['subject', 'action', 'setting']) {
+    $(name).addEventListener('change', () => {
+      if ($(name).value === CUSTOM) setTimeout(() => $(name + '-custom').focus());
+    });
+  }
 
   $('random').addEventListener('click', () => {
     const sel = ScenePrompt.randomSelection(S);

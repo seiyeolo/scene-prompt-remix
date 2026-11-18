@@ -14,8 +14,17 @@ writeFileSync(
     `window.SLOTS = ${JSON.stringify(slots, null, 2)};\n`
 );
 
-const terrainKo = { road: '길', water: '물', snow: '눈' };
+const terrainKo = slots.groups.terrain;
 const list = (items, line) => items.map(line).join('\n');
+// 분류 이름을 소제목처럼 붙여 목록을 묶는다.
+const groupedList = (items, keyOf, labels, line) =>
+  Object.entries(labels)
+    .map(([key, label]) => {
+      const inGroup = items.filter((x) => keyOf(x) === key);
+      return inGroup.length ? `[${label}]\n${list(inGroup, line)}` : '';
+    })
+    .filter(Boolean)
+    .join('\n');
 const guide = readFileSync(join(skill, 'references/mechanics-guide.md'), 'utf8')
   .replace(/^# .*\n/, '')
   .trim();
@@ -33,7 +42,7 @@ const instruction = `<!-- scripts/build.mjs가 만든 파일. 직접 고치지 �
 
 Create a 3D scene using Three.js: a cute Korean tiger rides a bicycle along a coastal road in Korea. The tiger is actually riding the bicycle, pedaling with both feet, steering the handlebars with its front paws while its tail sways naturally, and the wheels rotate in sync with the pedaling. ${slots.fixed.quality} ${slots.fixed.richness} ${slots.fixed.closing.replace('{cap}', slots.tech[0].cap)}
 
-문장 순서는 기술 → 주인공 → 행동 → 배경 → 동작 문장 → 움직임 품질 → 풍부함 → 마무리입니다. 이 순서를 지킵니다.
+문장 순서는 기술 → 주인공 → 행동 → 배경 → 동작 문장 → 움직임 품질 → 풍부함 → (화풍) → (심화 요소) → 마무리입니다. 이 순서를 지킵니다.
 
 ## 기본값
 
@@ -41,19 +50,22 @@ Create a 3D scene using Three.js: a cute Korean tiger rides a bicycle along a co
 
 ## 고를 수 있는 것
 
-목록에 없는 것을 새로 지어도 됩니다. 단, 행동과 배경의 지형(길/물/눈)은 반드시 맞춥니다.
+목록에 없는 것을 새로 지어도 됩니다. 사용자가 목록 밖의 주제(예: 우리 학교, 회사 마스코트, 고향)를 말하면 오히려 새로 지어야 합니다. 단, 행동과 배경의 지형(${Object.values(terrainKo).join('/')})은 반드시 맞춥니다. 뱀이나 물고기처럼 팔다리가 없는 주인공은 행동을 몸에 맞게 고릅니다.
 
 주인공:
-${list(slots.subjects, (s) => `- ${s.ko}: ${s.en}`)}
+${groupedList(slots.subjects, (s) => s.group, slots.groups.subject, (s) => `- ${s.ko}: ${s.en}`)}
 
 행동:
-${list(slots.actions, (a) => `- ${a.ko} (${terrainKo[a.terrain]}): ${a.verb}`)}
+${groupedList(slots.actions, (a) => a.terrain, terrainKo, (a) => `- ${a.ko}: ${a.verb}`)}
 
 배경:
-${list(slots.settings, (s) => `- ${s.ko} (${terrainKo[s.terrain]}): ${s.en}`)}
+${groupedList(slots.settings, (s) => s.terrains[0], terrainKo, (s) => `- ${s.ko}${s.terrains.length > 1 ? ` (${s.terrains.map((t) => terrainKo[t]).join('·')})` : ''}: ${s.en}`)}
 
 기술:
-${list(slots.tech, (t) => `- ${t.ko}: "${t.lead}" / 마무리 문장의 능력 표현은 "${t.cap}"`)}
+${list(slots.tech, (t) => `- ${t.ko} (${slots.groups.dim[t.dim]}): "${t.lead}" / 마무리 문장의 능력 표현은 "${t.cap}"`)}
+
+화풍 (2단계부터, 풍부함 문장 뒤에 한 문장으로 넣습니다. 사용자가 원하지 않으면 생략):
+${list(slots.styles.filter((s) => s.en), (s) => `- ${s.ko}: ${s.en}`)}
 
 ## 난이도
 

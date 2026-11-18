@@ -21,19 +21,41 @@ assert.equal(
   'Create a 3D scene using Three.js: a cute Korean tiger rides a bicycle along a coastal road in Korea.'
 );
 assert.throws(() => buildPrompt(slots, { ...base, action: 'kayak', level: 2 }), /needs a water setting/);
+assert.equal(buildPrompt(slots, { ...base, style: 'none', level: 2 }), ORIGINAL, '화풍 지정 안 함은 원문과 같아야 한다');
+
+// 지형마다 고를 배경이 하나 이상 있어야 한다.
+for (const a of slots.actions)
+  assert.ok(slots.settings.some((s) => s.terrains.includes(a.terrain)), `배경 없는 지형: ${a.terrain}`);
+for (const key of ['tech', 'subjects', 'actions', 'settings', 'styles', 'extras']) {
+  const ids = slots[key].map((x) => x.id);
+  assert.equal(new Set(ids).size, ids.length, `${key}에 중복 id`);
+}
+
+// 직접 입력: 지형 검사 없이 어떤 조합이든 문장이 완성되어야 한다.
+const custom = buildPrompt(slots, {
+  tech: 'three', level: 2,
+  subject: { custom: 'a sleepy koala ' },
+  action: { custom: 'drives a tiny tractor.' },
+  setting: { custom: 'through a busy night market in Seoul' },
+});
+assert.ok(custom.startsWith('Create a 3D scene using Three.js: a sleepy koala drives a tiny tractor through a busy night market in Seoul. The character is actually doing it'), custom);
+assert.ok(!/[{}]|undefined|\.\./.test(custom), custom);
+assert.ok(buildPrompt(slots, { ...base, action: 'kayak', setting: { custom: 'on a lake' }, level: 2 }).includes('kayak'));
 
 let count = 0;
 for (const tech of slots.tech)
   for (const subject of slots.subjects)
     for (const action of slots.actions)
-      for (const setting of slots.settings.filter((s) => s.terrain === action.terrain)) {
+      for (const setting of slots.settings.filter((s) => s.terrains.includes(action.terrain))) {
         const p = buildPrompt(slots, {
           tech: tech.id, subject: subject.id, action: action.id, setting: setting.id,
+          style: slots.styles[count % slots.styles.length].id,
           level: 3, extras: slots.extras.map((e) => e.id),
         });
         assert.ok(!/[{}]|undefined/.test(p), `채워지지 않은 자리: ${p}`);
         assert.ok(p.includes('in sync with'), `맞물림 누락: ${p}`);
-        if (tech.cap.startsWith('illustration')) assert.ok(!p.includes('3D'), `2D에 3D 표현: ${p}`);
+        if (tech.dim === '2d') assert.ok(!p.includes('3D'), `2D에 3D 표현: ${p}`);
+        assert.ok(!/\s[,.]|,,|\.\./.test(p), `문장부호 오류: ${p}`);
         count++;
       }
 

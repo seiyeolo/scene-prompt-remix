@@ -1,33 +1,101 @@
 // scripts/build.mjs가 만든 파일. 직접 고치지 말고 slots.json을 고친다.
 window.SLOTS = {
+  "groups": {
+    "subject": {
+      "animal": "동물",
+      "zodiac": "십이지",
+      "legend": "전설·민화",
+      "people": "사람·캐릭터"
+    },
+    "terrain": {
+      "road": "길",
+      "water": "물",
+      "sea": "바다(파도)",
+      "snow": "눈",
+      "ice": "얼음",
+      "sky": "하늘",
+      "field": "마당·들판"
+    },
+    "dim": {
+      "3d": "3D",
+      "2d": "2D"
+    }
+  },
   "tech": [
     {
       "id": "three",
-      "ko": "Three.js (3D)",
+      "dim": "3d",
+      "ko": "Three.js",
       "lead": "Create a 3D scene using Three.js",
       "cap": "3D modeling, animation, and visual design"
     },
     {
+      "id": "threegame",
+      "dim": "3d",
+      "ko": "Three.js 게임",
+      "lead": "Create a playable 3D game using Three.js",
+      "cap": "3D modeling, game design, and visual design"
+    },
+    {
+      "id": "r3f",
+      "dim": "3d",
+      "ko": "React Three Fiber",
+      "lead": "Create a 3D scene using React Three Fiber",
+      "cap": "3D modeling, animation, and visual design"
+    },
+    {
       "id": "babylon",
-      "ko": "Babylon.js (3D)",
+      "dim": "3d",
+      "ko": "Babylon.js",
       "lead": "Create a 3D scene using Babylon.js",
       "cap": "3D modeling, animation, and visual design"
     },
     {
+      "id": "aframe",
+      "dim": "3d",
+      "ko": "A-Frame (VR)",
+      "lead": "Create an immersive WebXR scene using A-Frame",
+      "cap": "3D modeling, animation, and visual design"
+    },
+    {
+      "id": "glsl",
+      "dim": "3d",
+      "ko": "WebGL 셰이더",
+      "lead": "Create a 3D scene rendered with raw WebGL and custom GLSL shaders",
+      "cap": "3D modeling, shader programming, and visual design"
+    },
+    {
       "id": "p5",
-      "ko": "p5.js (2D)",
+      "dim": "2d",
+      "ko": "p5.js",
       "lead": "Create an animated 2D scene using p5.js",
       "cap": "illustration, animation, and visual design"
     },
     {
       "id": "canvas",
-      "ko": "Canvas API (2D)",
+      "dim": "2d",
+      "ko": "Canvas API",
       "lead": "Create an animated 2D scene using the HTML Canvas API",
       "cap": "illustration, animation, and visual design"
     },
     {
+      "id": "pixi",
+      "dim": "2d",
+      "ko": "PixiJS",
+      "lead": "Create an animated 2D scene using PixiJS",
+      "cap": "illustration, animation, and visual design"
+    },
+    {
+      "id": "phaser",
+      "dim": "2d",
+      "ko": "Phaser 게임",
+      "lead": "Create a playable 2D game using Phaser",
+      "cap": "illustration, game design, and visual design"
+    },
+    {
       "id": "svg",
-      "ko": "SVG + CSS (일러스트)",
+      "dim": "2d",
+      "ko": "SVG + CSS",
       "lead": "Create an animated scene using only SVG and CSS",
       "cap": "illustration, animation, and visual design"
     }
@@ -35,6 +103,7 @@ window.SLOTS = {
   "subjects": [
     {
       "id": "tiger",
+      "group": "animal",
       "ko": "호랑이",
       "en": "a cute Korean tiger",
       "short": "tiger",
@@ -45,6 +114,7 @@ window.SLOTS = {
     },
     {
       "id": "magpie",
+      "group": "animal",
       "ko": "까치",
       "en": "a cheerful Korean magpie",
       "short": "magpie",
@@ -55,6 +125,7 @@ window.SLOTS = {
     },
     {
       "id": "bear",
+      "group": "animal",
       "ko": "반달가슴곰",
       "en": "a chubby Asiatic black bear cub",
       "short": "bear cub",
@@ -65,6 +136,7 @@ window.SLOTS = {
     },
     {
       "id": "jindo",
+      "group": "animal",
       "ko": "진돗개",
       "en": "a cute white Jindo dog",
       "short": "Jindo dog",
@@ -74,17 +146,8 @@ window.SLOTS = {
       "secondary": "its curled tail wags happily"
     },
     {
-      "id": "rabbit",
-      "ko": "달토끼",
-      "en": "a fluffy moon rabbit from Korean folklore",
-      "short": "rabbit",
-      "poss": "its",
-      "front": "front paws",
-      "rear": "feet",
-      "secondary": "its long ears flap in the wind"
-    },
-    {
       "id": "crane",
+      "group": "animal",
       "ko": "두루미",
       "en": "an elegant red-crowned crane",
       "short": "crane",
@@ -94,7 +157,173 @@ window.SLOTS = {
       "secondary": "its long neck bobs gently"
     },
     {
+      "id": "cat",
+      "group": "animal",
+      "ko": "고양이",
+      "en": "a chubby orange tabby cat",
+      "short": "cat",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "hind paws",
+      "secondary": "its striped tail swishes from side to side"
+    },
+    {
+      "id": "otter",
+      "group": "animal",
+      "ko": "수달",
+      "en": "a playful river otter",
+      "short": "otter",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "webbed hind feet",
+      "secondary": "its whiskers twitch and its thick tail trails behind it"
+    },
+    {
+      "id": "chipmunk",
+      "group": "animal",
+      "ko": "다람쥐",
+      "en": "a tiny striped chipmunk",
+      "short": "chipmunk",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "hind feet",
+      "secondary": "its cheeks puff out and its bushy tail bounces"
+    },
+    {
+      "id": "raccoondog",
+      "group": "animal",
+      "ko": "너구리",
+      "en": "a round-bellied raccoon dog with a masked face",
+      "short": "raccoon dog",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "hind paws",
+      "secondary": "its fluffy tail bobs behind it"
+    },
+    {
+      "id": "waterdeer",
+      "group": "animal",
+      "ko": "고라니",
+      "en": "a shy water deer with tiny tusks",
+      "short": "water deer",
+      "poss": "its",
+      "front": "front hooves",
+      "rear": "hind hooves",
+      "secondary": "its big ears flick and its short tail twitches"
+    },
+    {
+      "id": "sapsal",
+      "group": "animal",
+      "ko": "삽살개",
+      "en": "a shaggy Sapsali dog with fur covering its eyes",
+      "short": "Sapsali dog",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "hind paws",
+      "secondary": "its long shaggy fur bounces with every movement"
+    },
+    {
+      "id": "rat",
+      "group": "zodiac",
+      "ko": "쥐 (자)",
+      "en": "a clever little rat",
+      "short": "rat",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "hind feet",
+      "secondary": "its thin tail curls and its round ears twitch"
+    },
+    {
+      "id": "ox",
+      "group": "zodiac",
+      "ko": "소 (축)",
+      "en": "a sturdy, gentle ox",
+      "short": "ox",
+      "poss": "its",
+      "front": "front hooves",
+      "rear": "hind hooves",
+      "secondary": "its tail flicks and the bell around its neck jingles"
+    },
+    {
+      "id": "dragon",
+      "group": "zodiac",
+      "ko": "용 (진)",
+      "en": "a friendly baby blue dragon",
+      "short": "baby dragon",
+      "poss": "its",
+      "front": "front claws",
+      "rear": "hind legs",
+      "secondary": "its little wings flutter and its long whiskers drift in the wind"
+    },
+    {
+      "id": "pony",
+      "group": "zodiac",
+      "ko": "말 (오)",
+      "en": "a spirited little pony",
+      "short": "pony",
+      "poss": "its",
+      "front": "front hooves",
+      "rear": "hind hooves",
+      "secondary": "its mane and tail stream in the wind"
+    },
+    {
+      "id": "lamb",
+      "group": "zodiac",
+      "ko": "양 (미)",
+      "en": "a fluffy little lamb",
+      "short": "lamb",
+      "poss": "its",
+      "front": "front hooves",
+      "rear": "hind hooves",
+      "secondary": "its woolly fleece bounces softly"
+    },
+    {
+      "id": "monkey",
+      "group": "zodiac",
+      "ko": "원숭이 (신)",
+      "en": "a curious little monkey",
+      "short": "monkey",
+      "poss": "its",
+      "front": "hands",
+      "rear": "feet",
+      "secondary": "its long tail curls behind it for balance"
+    },
+    {
+      "id": "rooster",
+      "group": "zodiac",
+      "ko": "닭 (유)",
+      "en": "a proud rooster with a bright red comb",
+      "short": "rooster",
+      "poss": "its",
+      "front": "wing tips",
+      "rear": "feet",
+      "secondary": "its red comb wobbles and its tail feathers bounce"
+    },
+    {
+      "id": "piglet",
+      "group": "zodiac",
+      "ko": "돼지 (해)",
+      "en": "a round pink piglet",
+      "short": "piglet",
+      "poss": "its",
+      "front": "front trotters",
+      "rear": "hind trotters",
+      "secondary": "its curly tail bounces and its ears flop"
+    },
+    {
+      "id": "rabbit",
+      "group": "legend",
+      "ko": "달토끼",
+      "en": "a fluffy moon rabbit from Korean folklore",
+      "short": "rabbit",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "feet",
+      "secondary": "its long ears flap in the wind"
+    },
+    {
       "id": "dokkaebi",
+      "group": "legend",
       "ko": "도깨비",
       "en": "a mischievous but friendly Korean dokkaebi (goblin)",
       "short": "dokkaebi",
@@ -104,7 +333,41 @@ window.SLOTS = {
       "secondary": "the club on its belt swings with each movement"
     },
     {
+      "id": "haetae",
+      "group": "legend",
+      "ko": "해태",
+      "en": "a guardian haetae, a lion-like creature from Korean legend",
+      "short": "haetae",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "hind paws",
+      "secondary": "its curly mane bounces and the bell on its collar jingles"
+    },
+    {
+      "id": "gumiho",
+      "group": "legend",
+      "ko": "구미호",
+      "en": "a playful nine-tailed fox (gumiho)",
+      "short": "fox",
+      "poss": "its",
+      "front": "front paws",
+      "rear": "hind paws",
+      "secondary": "its nine fluffy tails fan out and sway"
+    },
+    {
+      "id": "turtle",
+      "group": "legend",
+      "ko": "별주부 거북",
+      "en": "a wise old sea turtle from the tale of Byeoljubu",
+      "short": "turtle",
+      "poss": "its",
+      "front": "front flippers",
+      "rear": "hind flippers",
+      "secondary": "its head bobs gently out of its shell"
+    },
+    {
       "id": "haenyeo",
+      "group": "people",
       "ko": "해녀",
       "en": "a cheerful Jeju haenyeo (woman diver)",
       "short": "haenyeo",
@@ -112,6 +375,61 @@ window.SLOTS = {
       "front": "hands",
       "rear": "feet",
       "secondary": "her net bag swings behind her"
+    },
+    {
+      "id": "child",
+      "group": "people",
+      "ko": "한복 입은 아이",
+      "en": "a cheerful Korean child in a colorful hanbok",
+      "short": "child",
+      "poss": "their",
+      "front": "hands",
+      "rear": "feet",
+      "secondary": "the ribbons of their hanbok flutter"
+    },
+    {
+      "id": "seonbi",
+      "group": "people",
+      "ko": "선비",
+      "en": "a scholarly seonbi in a traditional gat hat",
+      "short": "seonbi",
+      "poss": "his",
+      "front": "hands",
+      "rear": "feet",
+      "secondary": "the strings of his gat hat flutter in the wind"
+    },
+    {
+      "id": "grandma",
+      "group": "people",
+      "ko": "할머니",
+      "en": "a lively Korean grandmother wearing a sun visor",
+      "short": "grandmother",
+      "poss": "her",
+      "front": "hands",
+      "rear": "feet",
+      "secondary": "her flowery scarf flutters behind her"
+    },
+    {
+      "id": "astronaut",
+      "group": "people",
+      "ko": "꼬마 우주비행사",
+      "en": "a little astronaut in a puffy white spacesuit",
+      "short": "astronaut",
+      "poss": "their",
+      "front": "gloved hands",
+      "rear": "boots",
+      "secondary": "the antenna on their backpack wobbles"
+    },
+    {
+      "id": "robot",
+      "group": "people",
+      "ko": "로봇",
+      "en": "a small friendly robot with glowing eyes",
+      "short": "robot",
+      "poss": "its",
+      "front": "metal hands",
+      "rear": "metal feet",
+      "secondary": "its antenna wobbles and its eyes blink"
     }
   ],
   "actions": [
@@ -121,6 +439,13 @@ window.SLOTS = {
       "terrain": "road",
       "verb": "rides a bicycle",
       "mech": "is actually riding the bicycle, pedaling with both {rear}, steering the handlebars with {poss} {front} while {secondary}, and the wheels rotate in sync with the pedaling."
+    },
+    {
+      "id": "unicycle",
+      "ko": "외발자전거",
+      "terrain": "road",
+      "verb": "rides a unicycle",
+      "mech": "is actually riding the unicycle, pedaling with both {rear} and holding {poss} {front} out to the sides for balance while {secondary}, and the single wheel rotates in sync with the pedaling."
     },
     {
       "id": "skateboard",
@@ -137,6 +462,13 @@ window.SLOTS = {
       "mech": "is actually riding the kick scooter, standing on the deck with one of {poss} {rear} and pushing off the ground with the other, steering the handlebar with {poss} {front} while {secondary}, and the wheels spin in sync with each push."
     },
     {
+      "id": "inline",
+      "ko": "인라인스케이트",
+      "terrain": "road",
+      "verb": "glides on inline skates",
+      "mech": "is actually skating, pushing off in long strides on the skates strapped to {poss} {rear} and swinging {poss} {front} for balance while {secondary}, and the skate wheels spin in sync with each stride."
+    },
+    {
       "id": "kayak",
       "ko": "카약",
       "terrain": "water",
@@ -151,6 +483,20 @@ window.SLOTS = {
       "mech": "is actually paddling, standing balanced with both {rear} planted on the board and gripping a long paddle with {poss} {front}, switching sides every few strokes while {secondary}, and the board glides and leaves a wake in sync with each stroke."
     },
     {
+      "id": "rowboat",
+      "ko": "나룻배 노젓기",
+      "terrain": "water",
+      "verb": "rows a small wooden boat",
+      "mech": "is actually rowing, seated with both {rear} braced against the footrest and pulling the two oars with {poss} {front} while {secondary}, and the boat glides forward in sync with each pull of the oars."
+    },
+    {
+      "id": "surf",
+      "ko": "서핑",
+      "terrain": "sea",
+      "verb": "rides a surfboard",
+      "mech": "is actually surfing, crouched with both {rear} planted on the board and {poss} {front} spread out for balance while {secondary}, and the board carves along the face of the wave in sync with each shift of weight."
+    },
+    {
       "id": "sled",
       "ko": "눈썰매",
       "terrain": "snow",
@@ -163,68 +509,397 @@ window.SLOTS = {
       "terrain": "snow",
       "verb": "skis",
       "mech": "is actually skiing, knees bent with both {rear} locked into the skis and planting a pole with each of {poss} {front} in rhythm while {secondary}, and the skis carve tracks in the snow in sync with each turn."
+    },
+    {
+      "id": "snowboard",
+      "ko": "스노보드",
+      "terrain": "snow",
+      "verb": "rides a snowboard",
+      "mech": "is actually snowboarding, knees bent with both {rear} strapped onto the board and {poss} {front} held out for balance while {secondary}, and the board carves curving tracks in the snow in sync with each shift of weight."
+    },
+    {
+      "id": "iceskate",
+      "ko": "스케이트",
+      "terrain": "ice",
+      "verb": "ice-skates",
+      "mech": "is actually skating, gliding in long strides on the blades strapped to {poss} {rear} and swinging {poss} {front} in rhythm while {secondary}, and the blades leave curving marks on the ice in sync with each stride."
+    },
+    {
+      "id": "icesled",
+      "ko": "얼음썰매",
+      "terrain": "ice",
+      "verb": "rides a traditional Korean ice sled",
+      "mech": "is actually riding the ice sled, kneeling with both {rear} tucked under on the wooden seat and pushing two short iron-tipped poles into the ice with {poss} {front} while {secondary}, and the sled slides forward in sync with each push."
+    },
+    {
+      "id": "paraglider",
+      "ko": "패러글라이딩",
+      "terrain": "sky",
+      "verb": "flies a paraglider",
+      "mech": "is actually paragliding, sitting in the harness with both {rear} dangling and pulling the brake toggles with {poss} {front} while {secondary}, and the colorful canopy banks and turns in sync with each pull."
+    },
+    {
+      "id": "balloon",
+      "ko": "열기구",
+      "terrain": "sky",
+      "verb": "rides a hot air balloon",
+      "mech": "is actually piloting the balloon, standing with both {rear} planted in the wicker basket and pulling the burner valve with {poss} {front} while {secondary}, and the balloon rises in sync with each roaring burst of flame."
+    },
+    {
+      "id": "kite",
+      "ko": "연날리기",
+      "terrain": "field",
+      "verb": "flies a traditional Korean shield kite (bangpae-yeon)",
+      "mech": "is actually flying the kite, stepping backward with {poss} {rear} and letting out the string from a wooden reel held in {poss} {front} while {secondary}, and the kite climbs and dips in sync with each tug on the string."
+    },
+    {
+      "id": "swing",
+      "ko": "그네",
+      "terrain": "field",
+      "verb": "swings on a tall traditional Korean swing",
+      "mech": "is actually swinging, standing on the seat with both {rear} and gripping the long ropes with {poss} {front}, pumping with bent knees while {secondary}, and the swing arcs higher in sync with each pump."
+    },
+    {
+      "id": "jegi",
+      "ko": "제기차기",
+      "terrain": "field",
+      "verb": "plays jegichagi, a Korean shuttlecock-kicking game,",
+      "mech": "is actually playing jegichagi, kicking the feathered jegi upward again and again with one of {poss} {rear} and holding {poss} {front} out for balance while {secondary}, and the jegi rises and falls in sync with each kick."
+    },
+    {
+      "id": "neolttwigi",
+      "ko": "널뛰기",
+      "terrain": "field",
+      "verb": "plays neolttwigi, Korean seesaw jumping, with a friend",
+      "mech": "is actually jumping, landing with both {rear} on the end of the plank to launch the friend into the air and flinging {poss} {front} upward at the top of each jump while {secondary}, and the plank rocks up and down in sync with each landing."
     }
   ],
   "settings": [
     {
       "id": "coast",
       "ko": "동해 해안도로",
-      "terrain": "road",
+      "terrains": [
+        "road"
+      ],
       "en": "along a coastal road in Korea"
     },
     {
       "id": "hanok",
       "ko": "한옥마을 골목",
-      "terrain": "road",
+      "terrains": [
+        "road"
+      ],
       "en": "through the alleys of a traditional Korean hanok village"
     },
     {
       "id": "hangang",
       "ko": "한강 자전거길(밤)",
-      "terrain": "road",
+      "terrains": [
+        "road"
+      ],
       "en": "along the Han River bike path in Seoul at night"
     },
     {
       "id": "jeju",
       "ko": "제주 유채꽃길",
-      "terrain": "road",
+      "terrains": [
+        "road"
+      ],
       "en": "along a Jeju Island road lined with canola flowers and black stone walls"
     },
     {
       "id": "seorak",
       "ko": "설악산 단풍길",
-      "terrain": "road",
+      "terrains": [
+        "road"
+      ],
       "en": "along a winding mountain road through the autumn foliage of Seoraksan"
     },
     {
-      "id": "jejusea",
-      "ko": "제주 앞바다",
-      "terrain": "water",
-      "en": "across the calm turquoise sea off Jeju Island"
+      "id": "namiseom",
+      "ko": "남이섬 메타세쿼이아길",
+      "terrains": [
+        "road"
+      ],
+      "en": "down the tall metasequoia-lined path on Nami Island"
+    },
+    {
+      "id": "gyeongju",
+      "ko": "경주 벚꽃길",
+      "terrains": [
+        "road"
+      ],
+      "en": "along a cherry-blossom road past the ancient royal tombs of Gyeongju"
+    },
+    {
+      "id": "gwangan",
+      "ko": "부산 광안대교(밤)",
+      "terrains": [
+        "road"
+      ],
+      "en": "across Gwangan Bridge in Busan at night with the city lights glittering"
+    },
+    {
+      "id": "damyang",
+      "ko": "담양 대나무숲",
+      "terrains": [
+        "road"
+      ],
+      "en": "through the towering bamboo forest of Damyang"
+    },
+    {
+      "id": "boseong",
+      "ko": "보성 녹차밭",
+      "terrains": [
+        "road"
+      ],
+      "en": "between the rolling green tea fields of Boseong"
     },
     {
       "id": "river",
       "ko": "한강 노을",
-      "terrain": "water",
+      "terrains": [
+        "water"
+      ],
       "en": "down the Han River in Seoul at sunset"
     },
     {
       "id": "valley",
       "ko": "산속 계곡",
-      "terrain": "water",
+      "terrains": [
+        "water"
+      ],
       "en": "down a clear mountain valley stream in Korea"
+    },
+    {
+      "id": "suncheon",
+      "ko": "순천만 갈대습지",
+      "terrains": [
+        "water"
+      ],
+      "en": "through the golden reed marshes of Suncheon Bay"
+    },
+    {
+      "id": "dumulmeori",
+      "ko": "양평 두물머리 새벽",
+      "terrains": [
+        "water"
+      ],
+      "en": "across the misty river at Dumulmeori in Yangpyeong at dawn"
+    },
+    {
+      "id": "jejusea",
+      "ko": "제주 앞바다",
+      "terrains": [
+        "water",
+        "sea"
+      ],
+      "en": "across the turquoise sea off Jeju Island"
+    },
+    {
+      "id": "haeundae",
+      "ko": "부산 해운대",
+      "terrains": [
+        "water",
+        "sea"
+      ],
+      "en": "off Haeundae Beach in Busan with the skyline behind"
+    },
+    {
+      "id": "yangyang",
+      "ko": "양양 서핑 해변",
+      "terrains": [
+        "sea"
+      ],
+      "en": "on the rolling waves of a surf beach in Yangyang on the East Sea"
     },
     {
       "id": "gangwon",
       "ko": "강원도 눈 언덕",
-      "terrain": "snow",
+      "terrains": [
+        "snow"
+      ],
       "en": "down a snowy hill in Gangwon-do, Korea"
     },
     {
       "id": "snowhanok",
       "ko": "눈 내린 한옥마을",
-      "terrain": "snow",
+      "terrains": [
+        "snow"
+      ],
       "en": "down a gentle slope beside a snow-covered Korean hanok village"
+    },
+    {
+      "id": "pyeongchang",
+      "ko": "평창 스키장",
+      "terrains": [
+        "snow"
+      ],
+      "en": "down a ski slope in Pyeongchang under a bright winter sky"
+    },
+    {
+      "id": "hallasan",
+      "ko": "한라산 설경",
+      "terrains": [
+        "snow"
+      ],
+      "en": "across the snowy highlands of Hallasan on Jeju Island"
+    },
+    {
+      "id": "daegwallyeong",
+      "ko": "대관령 눈 덮인 목장",
+      "terrains": [
+        "snow"
+      ],
+      "en": "across the snow-covered sheep pastures of Daegwallyeong"
+    },
+    {
+      "id": "hwacheon",
+      "ko": "화천 얼음축제",
+      "terrains": [
+        "ice"
+      ],
+      "en": "across a frozen river during the Hwacheon ice festival in Gangwon-do"
+    },
+    {
+      "id": "seoulplaza",
+      "ko": "서울광장 스케이트장",
+      "terrains": [
+        "ice"
+      ],
+      "en": "around the outdoor ice rink in Seoul Plaza on a winter evening"
+    },
+    {
+      "id": "ricepond",
+      "ko": "시골 얼음 논",
+      "terrains": [
+        "ice"
+      ],
+      "en": "across a frozen rice paddy in the Korean countryside"
+    },
+    {
+      "id": "danyang",
+      "ko": "단양 남한강 하늘",
+      "terrains": [
+        "sky"
+      ],
+      "en": "high above the Namhan River in Danyang"
+    },
+    {
+      "id": "jejuoreum",
+      "ko": "제주 오름 위 하늘",
+      "terrains": [
+        "sky"
+      ],
+      "en": "over the green volcanic cones (oreum) of Jeju Island"
+    },
+    {
+      "id": "gyeongjusky",
+      "ko": "경주 고분 위 일출",
+      "terrains": [
+        "sky"
+      ],
+      "en": "over the ancient royal tombs of Gyeongju at sunrise"
+    },
+    {
+      "id": "jirisan",
+      "ko": "지리산 운해",
+      "terrains": [
+        "sky"
+      ],
+      "en": "above a sea of clouds over the ridges of Jirisan at dawn"
+    },
+    {
+      "id": "hangangpark",
+      "ko": "한강공원 잔디밭",
+      "terrains": [
+        "field"
+      ],
+      "en": "in a grassy riverside park along the Han River"
+    },
+    {
+      "id": "gyeongbokgung",
+      "ko": "경복궁 앞마당",
+      "terrains": [
+        "field"
+      ],
+      "en": "in the courtyard of Gyeongbokgung Palace"
+    },
+    {
+      "id": "folkvillage",
+      "ko": "민속촌 마당",
+      "terrains": [
+        "field"
+      ],
+      "en": "in the yard of a traditional Korean folk village"
+    },
+    {
+      "id": "barley",
+      "ko": "청보리밭",
+      "terrains": [
+        "field"
+      ],
+      "en": "in a green barley field swaying in the spring breeze"
+    },
+    {
+      "id": "jejuhill",
+      "ko": "제주 바닷가 언덕",
+      "terrains": [
+        "field"
+      ],
+      "en": "on a grassy hilltop overlooking the sea on Jeju Island"
+    }
+  ],
+  "styles": [
+    {
+      "id": "none",
+      "ko": "지정 안 함",
+      "en": ""
+    },
+    {
+      "id": "lowpoly",
+      "ko": "로우폴리 파스텔",
+      "en": "Give it a charming low-poly look with soft pastel colors."
+    },
+    {
+      "id": "toon",
+      "ko": "카툰 셀셰이딩",
+      "en": "Use a cel-shaded cartoon style with clean outlines."
+    },
+    {
+      "id": "clay",
+      "ko": "클레이 애니메이션",
+      "en": "Make everything look like soft handmade clay, like a stop-motion film."
+    },
+    {
+      "id": "watercolor",
+      "ko": "수채화",
+      "en": "Give it a hand-painted watercolor look with soft edges."
+    },
+    {
+      "id": "minhwa",
+      "ko": "민화풍",
+      "en": "Draw inspiration from Korean folk painting (minhwa): bold outlines, flat bright colors, and playful charm."
+    },
+    {
+      "id": "pixel",
+      "ko": "픽셀아트",
+      "en": "Use a retro pixel-art look with a limited color palette."
+    },
+    {
+      "id": "papercraft",
+      "ko": "종이 공예",
+      "en": "Make the world look like layered paper-craft cutouts."
+    },
+    {
+      "id": "realistic",
+      "ko": "실사풍",
+      "en": "Aim for a realistic look with physically based materials and natural light."
+    },
+    {
+      "id": "neon",
+      "ko": "네온 야경",
+      "en": "Use a glowing neon night style with vivid light trails."
     }
   ],
   "extras": [
@@ -234,9 +909,19 @@ window.SLOTS = {
       "en": "Day turns to night on a smooth cycle, and lights come on at dusk."
     },
     {
+      "id": "season",
+      "ko": "계절 전환",
+      "en": "Let the user switch seasons (spring blossoms, summer green, autumn leaves, winter snow) and change the scenery to match."
+    },
+    {
       "id": "weather",
       "ko": "날씨 변화",
       "en": "Add changing weather, such as drifting clouds, light rain, or falling petals, and make the scene react to it."
+    },
+    {
+      "id": "particles",
+      "ko": "파티클 효과",
+      "en": "Add particle effects such as dust, splashes, or sparkles that react to the motion."
     },
     {
       "id": "camera",
@@ -249,11 +934,36 @@ window.SLOTS = {
       "en": "Let the user control the speed with a slider or the keyboard, and keep every moving part in sync with it."
     },
     {
+      "id": "sound",
+      "ko": "소리",
+      "en": "Add ambient sound and sound effects with the Web Audio API, with a mute button."
+    },
+    {
+      "id": "minigame",
+      "ko": "미니게임",
+      "en": "Turn it into a light mini-game: collect items along the way and show a score."
+    },
+    {
+      "id": "photo",
+      "ko": "사진 모드",
+      "en": "Add a photo mode that hides the UI and lets the user save a screenshot."
+    },
+    {
       "id": "single",
       "ko": "단일 HTML",
       "en": "Deliver everything as a single self-contained HTML file that works on both mobile and desktop."
     }
   ],
+  "custom": {
+    "subject": {
+      "short": "character",
+      "poss": "their",
+      "front": "hands",
+      "rear": "feet",
+      "secondary": "their body leans and balances naturally"
+    },
+    "mech": "is actually doing it, using {poss} {rear} and {front} in a natural, physically believable way while {secondary}, and every moving part responds in sync with the body's motion."
+  },
   "fixed": {
     "quality": "The motion is natural and smooth.",
     "richness": "The scene is lively and richly detailed, with a natural environment, dynamic effects, lighting and shadows, and interactive features.",
